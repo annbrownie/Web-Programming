@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url('../Resources/bkg.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .header-logo {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            height: 100px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-sizing: border-box;
+            margin: 20px;
+        }
+
+
+        .required::after {
+            content: "*";
+            color: red;
+        }
+
+        input, select {
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: whitesmoke;
+            border: 1px solid #ccc;
+        }
+
+        label {
+            margin: 10px 0;
+            display: block;
+        }
+
+        /* Style for side-by-side first and last name fields */
+        .name-fields {
+            display: flex;
+            gap: 100px;
+        }
+
+        .name-fields input {
+            width: 150%;
+        }
+
+        /* Responsive adjustment */
+        @media (max-width: 600px) {
+            .name-fields {
+                flex-direction: column;
+            }
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 10px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0055aa;
+        }
+
+        .cancel-button {
+            background-color: #b23b3b;
+        }
+
+        .cancel-button:hover {
+            background-color: #a12e2e;
+        }
+    </style>
+</head>
+<body>
+    <img src="../Resources/logo.jpg" class="header-logo" alt="Company Logo">
+    <div class="container">
+        <h2>Register</h2>
+        <form id="registrationForm">
+            <!-- Side-by-Side First Name and Last Name -->
+            <div class="name-fields">
+                <div>
+                    <label for="firstName">First Name <span class="required"></span></label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div>
+                    <label for="lastName">Last Name <span class="required"></span></label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+
+            <label for="dob">Date of Birth <span class="required"></span></label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="gender">Gender <span class="required"></span></label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="phone">Phone Number <span class="required"></span></label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="email">Email <span class="required"></span></label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="trn">TRN (000-000-000 format) <span class="required"></span></label>
+            <input type="text" id="trn" name="trn" maxlength="11" required>
+
+            <label for="password">Password (8 characters min) <span class="required"></span></label>
+            <input type="password" id="password" name="password" minlength="8" required>
+
+            <button type="button" onclick="registerUser()">Register</button>
+            <button type="button" class="cancel-button" onclick="clearForm()">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to automatically format TRN as user types
+        document.getElementById('trn').addEventListener('input', function(e) {
+            let trn = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+            if (trn.length > 3 && trn.length <= 6) {
+                trn = `${trn.slice(0, 3)}-${trn.slice(3)}`;
+            } else if (trn.length > 6) {
+                trn = `${trn.slice(0, 3)}-${trn.slice(3, 6)}-${trn.slice(6, 9)}`;
+            }
+            e.target.value = trn;
+        });
+
+        function registerUser() {
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const dob = document.getElementById("dob").value;
+            const gender = document.getElementById("gender").value;
+            const phone = document.getElementById("phone").value;
+            const email = document.getElementById("email").value;
+            const trn = document.getElementById("trn").value;
+            const password = document.getElementById("password").value;
+
+            // Validate age
+            const birthDate = new Date(dob);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            if (age < 18 || (age === 18 && today < birthDate.setFullYear(birthDate.getFullYear() + 18))) {
+                alert("You must be at least 18 years old to register.");
+                return;
+            }
+
+            // Validate TRN format
+            const trnPattern = /^\d{3}-\d{3}-\d{3}$/;
+            if (!trnPattern.test(trn)) {
+                alert("TRN must be in the format 000-000-000.");
+                return;
+            }
+
+            // Check for unique TRN in localStorage
+            const existingUsers = JSON.parse(localStorage.getItem("RegistrationData") || "[]");
+            if (existingUsers.some(user => user.trn === trn)) {
+                alert("This TRN is already registered.");
+                return;
+            }
+
+            // Validate password length
+            if (password.length < 8) {
+                alert("Password must be at least 8 characters long.");
+                return;
+            }
+
+            // Store user data in localStorage
+            const newUser = {
+                firstName,
+                lastName,
+                dob,
+                gender,
+                phone,
+                email,
+                trn,
+                password,
+                dateOfRegistration: new Date().toISOString(),
+                cart: {},
+                invoices: []
+            };
+            existingUsers.push(newUser);
+            localStorage.setItem("RegistrationData", JSON.stringify(existingUsers));
+
+            alert("Registration successful!");
+            document.getElementById("registrationForm").reset();
+        }
+
+        // Clear form function
+        function clearForm() {
+            document.getElementById("registrationForm").reset();
+        }
+    </script>
+</body>
+</html>

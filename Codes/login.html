@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Number 2</title>
+    <title>Login Page</title>
     
     <script src ="jscript.js"></script>
     <style>
+    
         .wrapper {
         display: flex;
+        font-family: Arial, sans-serif;
         justify-content: center;
         align-items: center;
         height: 100vh; 
@@ -92,6 +94,19 @@
         .checkbox-label input {
         margin-right: 10px;
         }
+        .cancel-button {
+            background-color: #b23b3b;
+        }
+
+        .cancel-button:hover {
+            background-color: #a12e2e;
+        }
+        .regis-button {
+            background-color: green
+        }
+        .regis-button:hover {
+            background-color: rgb(2, 105, 2)
+        }
     </style>
   
 
@@ -101,21 +116,102 @@
 
     <div class="wrapper">
         <div class="container">
-            <h2>Login</h2>
-            <form action="" method="">
-                <label for="Username">Username or email address <span class="required"></span></label>
-                <input type="text" id="Username" name="" size="40" required>
-                
-                <label for="Password">Password <span class="required"></span></label>
-                <input type="password" id="Password" name="" size="40" required>
-                <button type="button" onclick="login()" id = "sbutton">SUBMIT</button>
-                
-                <div class="checkbox-label">
-                    <input type="checkbox" name="remember">Remember me
+                <h2 >Login</h2>
+                <form id="loginForm" class="login-section">
+                    <label for="trn">TRN (Tax Registration Number)</label>
+                    <input type="text" id="trn" name="trn" maxlength="11" required placeholder="000-000-000">
+            
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+            
+                    <button type="button" onclick="loginUser()">Login</button>
+                    <button type="button" class="cancel-button" onclick="clearForm()">Cancel</button>
+                </form>
+                <div id="errorMessage" class="error-message"></div>
+            
+                <!-- Reset Password Link -->
+                <a href="#" class="reset-link" onclick="resetPasswordPrompt()">Forgot your password?</a>
+            
+                <!-- Register Section -->
+                <div class="register-section">
+                    <hr>
+                    <p>Don't have an account?</p>
+                    <button type="button" class="regis-button" onclick="window.location.href='registration.html'">Register your Account</button>
                 </div>
-                
-                <a href="" target="blank">Lost your password?</a>
-            </form>
+            </div>
+            
+            <script>
+                let loginAttempts = 3;
+            
+                function loginUser() {
+                    const trn = document.getElementById("trn").value;
+                    const password = document.getElementById("password").value;
+                    const errorMessage = document.getElementById("errorMessage");
+            
+                    // Retrieve registration data from localStorage
+                    const registrationData = JSON.parse(localStorage.getItem("RegistrationData")) || [];
+            
+                    // Check if TRN and password match any user in registration data
+                    const user = registrationData.find(user => user.trn === trn && user.password === password);
+            
+                    if (user) {
+                        // Successful login
+                        alert("Login successful! Redirecting to product catalog...");
+                        window.location.href = "product_catalog.html"; // Redirect to product catalog page
+                    } else {
+                        // Login failed
+                        loginAttempts--;
+                        if (loginAttempts > 0) {
+                            errorMessage.style.display = "block";
+                            errorMessage.textContent = `Incorrect TRN or password. You have ${loginAttempts} attempt(s) left.`;
+                        } else {
+                            errorMessage.style.display = "block";
+                            errorMessage.textContent = "Account locked due to too many failed attempts.";
+                            setTimeout(() => {
+                                window.location.href = "account_locked.html"; // Redirect to an account-locked page after 2 seconds
+                            }, 2000);
+                        }
+                    }
+                }
+            
+                // Format TRN input automatically
+                document.getElementById('trn').addEventListener('input', function(e) {
+                    let trn = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                    if (trn.length > 3 && trn.length <= 6) {
+                        trn = `${trn.slice(0, 3)}-${trn.slice(3)}`;
+                    } else if (trn.length > 6) {
+                        trn = `${trn.slice(0, 3)}-${trn.slice(3, 6)}-${trn.slice(6, 9)}`;
+                    }
+                    e.target.value = trn;
+                });
+            
+                // Reset Password Function
+                function resetPasswordPrompt() {
+                    const trn = prompt("Please enter your TRN to reset your password (format: 000-000-000):");
+            
+                    if (!trn) return; // If no TRN entered, exit the function
+            
+                    const registrationData = JSON.parse(localStorage.getItem("RegistrationData")) || [];
+                    const userIndex = registrationData.findIndex(user => user.trn === trn);
+
+            
+                    if (userIndex === -1) {
+                        alert("TRN not found. Please try again.");
+                        return;
+                    }
+            
+                    // Prompt for new password
+                    const newPassword = prompt("Enter a new password (at least 8 characters):");
+            
+                    if (newPassword && newPassword.length >= 8) {
+                        registrationData[userIndex].password = newPassword;
+                        localStorage.setItem("RegistrationData", JSON.stringify(registrationData));
+                        alert("Password has been successfully reset.");
+                    } else {
+                        alert("Password must be at least 8 characters long. Please try again.");
+                    }
+                }
+            </script>           
         </div>
     </div>
   
