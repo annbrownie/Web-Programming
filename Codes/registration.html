@@ -214,8 +214,8 @@
             existingUsers.push(newUser);
             localStorage.setItem("RegistrationData", JSON.stringify(existingUsers));
 
-            alert("Registration successful!");
-            document.getElementById("registrationForm").reset();
+            alert("Registration successful! Redirecting to product catalog...");
+            window.location.href = "product_catalog.html"; // Redirect to product catalog page
         }
 
         // Clear form function
