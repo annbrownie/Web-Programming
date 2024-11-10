@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h2 {
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        #userFrequency, #ageFrequency {
+            margin-top: 30px;
+        }
+
+        .frequency-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .label {
+            width: 100px;
+            font-weight: bold;
+        }
+
+        .bar {
+            height: 20px;
+            background-color: rgb(224, 34, 34);
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Dashboard</h2>
+
+<div id="userFrequency">
+    <h3>Gender Frequency</h3>
+    <div id="genderChart"></div>
+</div>
+
+<div id="ageFrequency">
+    <h3>Age Group Frequency</h3>
+    <div id="ageGroupChart"></div>
+</div>
+
+<script>
+    // Retrieve registration data from localStorage
+    const registrationData = JSON.parse(localStorage.getItem("RegistrationData")) || [];
+
+    // Function to display gender frequency chart
+    function ShowUserFrequency() {
+        const genderCount = { male: 0, female: 0, other: 0 };
+        const ageGroupCount = { "18-25": 0, "26-35": 0, "36-50": 0, "50+": 0 };
+        const currentYear = new Date().getFullYear();
+
+        // Calculate frequencies based on gender and age groups
+        registrationData.forEach(user => {
+            // Gender Count
+            genderCount[user.gender]++;
+
+            // Age Group Count
+            const age = currentYear - new Date(user.dob).getFullYear();
+            if (age >= 18 && age <= 25) ageGroupCount["18-25"]++;
+            else if (age >= 26 && age <= 35) ageGroupCount["26-35"]++;
+            else if (age >= 36 && age <= 50) ageGroupCount["36-50"]++;
+            else if (age > 50) ageGroupCount["50+"]++;
+        });
+
+        // Generate Gender Frequency Bar Chart
+        const genderChart = document.getElementById("genderChart");
+        genderChart.innerHTML = ''; // Clear existing content
+        Object.keys(genderCount).forEach(gender => {
+            const barContainer = document.createElement("div");
+            barContainer.classList.add("frequency-bar");
+
+            const label = document.createElement("span");
+            label.classList.add("label");
+            label.textContent = `${gender.charAt(0).toUpperCase() + gender.slice(1)}:`;
+
+            const bar = document.createElement("div");
+            bar.classList.add("bar");
+            bar.style.width = `${genderCount[gender] * 20}px`; // Adjust the multiplier as needed
+            bar.textContent = ` ${genderCount[gender]} `;
+
+            barContainer.appendChild(label);
+            barContainer.appendChild(bar);
+            genderChart.appendChild(barContainer);
+        });
+
+        // Generate Age Group Frequency Bar Chart
+        const ageGroupChart = document.getElementById("ageGroupChart");
+        ageGroupChart.innerHTML = ''; // Clear existing content
+        Object.keys(ageGroupCount).forEach(ageGroup => {
+            const barContainer = document.createElement("div");
+            barContainer.classList.add("frequency-bar");
+
+            const label = document.createElement("span");
+            label.classList.add("label");
+            label.textContent = `${ageGroup}:`;
+
+            const bar = document.createElement("div");
+            bar.classList.add("bar");
+            bar.style.width = `${ageGroupCount[ageGroup] * 20}px`; // Adjust the multiplier as needed
+            bar.textContent = ` ${ageGroupCount[ageGroup]} `;
+
+            barContainer.appendChild(label);
+            barContainer.appendChild(bar);
+            ageGroupChart.appendChild(barContainer);
+        });
+    }
+
+    // Call the function to display the frequency charts
+    ShowUserFrequency();
+</script>
+
+</body>
+</html>
