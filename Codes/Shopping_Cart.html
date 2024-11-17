@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="shopping_cart.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="Index.html"><img src="../Resources/logo.jpg" class="navlogo" alt="Company Logo"></a>
+        <a href="#About_us">ABOUT US</a>
+        <a href="mailto:kevoy.townsend@students.utech.edu.jm" target="_blank">Contact Us</a>
+    </div>
+    <div class="container">
+        <header>
+            <div class="title">Shopping Cart</div>
+        </header>
+        
+        <div id="image_container" class="listProduct"></div>
+        
+        <!-- Total Price Display -->
+        <div id="total_price" class="total-price">
+            <h3>Total: $0.00</h3>
+        </div>
+        
+        <div class="cartTab">
+            
+            <div class="listCart"></div>
+            <div class="btn">
+                <button class="close" onclick="window.location.href='Product_page.html'">CLOSE</button>
+                <button class="checkOut">Check Out</button>
+                <!-- Clear All Button -->
+                <button class="clearAll" onclick="clearCart()">Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- java Script for this page -->
+    <script>
+        // Wait until the DOM content is fully loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            loadCartItems(); // Load cart items after the page is ready by call the load cart items function
+        });
+    
+        // display items from the shopping cart
+        function loadCartItems() {
+            // Get items from localStorage
+            const items = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+            const container = document.getElementById("image_container"); // The container where cart items will be displayed
+            const totalPriceElement = document.getElementById("total_price"); // Element to display the total price
+            let total = 0; 
+    
+            if (items.length) {
+                // If there are items in the cart, create their HTML structure
+                container.innerHTML = items.map((item, index) => {
+                    
+                    total += item.price * item.quantity;
+    
+                    // Return HTML for each cart item
+                    return `
+                        <div class="cart-item" data-index="${index}">
+                            <img src="${item.imageUrl}" alt="${item.name}">
+                            <p>${item.name}</p>
+                            <p>Price: $${item.price}</p>
+                            <p>Quantity: 
+                                <!-- Input for quantity adjustment -->
+                                <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+                            </p>
+                            <!-- Button to remove the item from the cart -->
+                            <button onclick="removeItem(${index})">Remove</button>
+                        </div>
+                    `;
+                }).join(''); // Join all the item HTML into a single string
+            } else {
+                // If no items are in the cart, display a message
+                container.innerHTML = '<p>No items in the cart.</p>';
+            }
+    
+            // Update the total price display
+            totalPriceElement.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
+        }
+    
+        // Function to update the quantity
+        function updateQuantity(index, newQuantity) {
+            let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+            cart[index].quantity = parseInt(newQuantity, 10); // Update the quantity of the item 
+            localStorage.setItem("shoppingCart", JSON.stringify(cart)); 
+            loadCartItems(); // Reload the cart display to reflect the changes
+        }
+    
+        // Function to remove a specific item from the cart
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem("shoppingCart")) || []; 
+            cart.splice(index, 1); // Remove the item at the specified index
+            localStorage.setItem("shoppingCart", JSON.stringify(cart)); 
+            loadCartItems(); // Reload the cart display to reflect the changes
+        }
+    
+        // Function to clear all items from the cart
+        function clearCart() {
+            localStorage.removeItem("shoppingCart"); // Remove the shoppingCart entry from localStorage
+            loadCartItems();
+        }
+    </script>
+    
+</body>
+</html>
