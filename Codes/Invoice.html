@@ -6,9 +6,8 @@
     <title>Invoice</title>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script src="invoice.js" defer></script> 
     <style>
+        /* General styling for the page */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -16,6 +15,7 @@
             background-color: #f4f4f9;
         }
 
+        /* Navbar styles */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -39,6 +39,7 @@
             text-decoration: underline;
         }
 
+        /* Main container styling */
         .main {
             display: flex;
             justify-content: center;
@@ -48,6 +49,7 @@
             background-color: #f4f4f9;
         }
 
+        /* Invoice card styling */
         .Invoice {
             background-color: white;
             padding: 40px;
@@ -57,12 +59,14 @@
             width: 100%;
         }
 
+        /* Header and titles */
         h1, h3 {
             font-family: 'Anton', sans-serif;
             color: #333;
             margin-bottom: 20px;
         }
 
+        /* Product list styling */
         #product-list ul {
             list-style: none;
             padding: 0;
@@ -76,24 +80,20 @@
             border-bottom: 1px solid #ddd;
         }
 
-        #product-list ul li img {
-            width: 80px;
-            height: auto;
-            margin-right: 20px;
-        }
-
         #product-list ul li p {
             margin: 0;
             font-size: 16px;
             color: #555;
         }
 
+        /* Total cost styling */
         #total-cost {
-            font-weight: ;
+            font-weight: bold;
             font-size: 20px;
             color: #333;
         }
 
+        /* Button container and buttons */
         .button-container {
             margin-top: 30px;
             display: flex;
@@ -123,6 +123,7 @@
             background-color: #a12e2e;
         }
 
+        /* Footer styling */
         .footer {
             background-color: #242526;
             color: white;
@@ -131,32 +132,29 @@
             width: 100%;
             bottom: 0;
         }
-
     </style>
 </head>
 <body>
-    
+
+    <!-- Navbar section -->
     <div class="navbar">
         <a href="Index.html"><img src="../Resources/logo.jpg" class="navlogo" alt="Company Logo"></a>
         <a href="#About_us">ABOUT US</a>
         <a href="mailto:kevoy.townsend@students.utech.edu.jm" target="_blank">Contact Us</a>
     </div>
 
-    
+    <!-- Main invoice section -->
     <div class="main">
         <div class="Invoice">
             <h1>Order Summary</h1>
-
-            
             <div id="product-list">
                 <h3>Your Products</h3>
-                <ul id="selected-products"></ul> 
+                <!-- Dynamic product list will be inserted here -->
+                <ul id="selected-products"></ul>
             </div>
-
             <h3>Total Cost of Products: <span id="total-cost">$0</span></h3>
             <p>Tax included.</p>
-
-            
+            <!-- Buttons for checkout, cancel, and exit actions -->
             <div class="button-container">
                 <button id="checkoutBtn" onclick="confirmPurchase()">CheckOut</button>
                 <button id="cancelBtn" onclick="window.location.href = 'product_page.html'">Cancel</button>
@@ -164,21 +162,96 @@
             </div>
         </div>
     </div>
-    <br><br><br>
-    
+
+    <!-- Footer section -->
     <div class="footer">
         <footer>
-            <div class="footer-links">
-                <h4>Quick Links</h4><br>
-                <a href="mailto:kevoy.townsend@students.utech.edu.jm" target="_blank">Contact Us.</a>
-            </div>
-            <div class="footer-social">
-                <h4>Follow ME</h4>
-                <a href="https://www.instagram.com/_.kevvv._/" target="_blank">Instagram</a>
-            </div>
+            <p>&copy; 2024 KITGAME. All rights reserved.</p>
+        </footer>
+    </div>
 
-        <p>&copy; 2024 KITGAME. All rights reserved.</p>
-        </div>
+    <!-- JavaScript functionality -->
+    <script>
+        /**
+         * Confirm and process the purchase
+         * - Generates an invoice with user and product details
+         * - Stores the invoice in localStorage
+         * - Notifies the user about the generated invoice
+         */
+        function confirmPurchase() {
+            // Mocked user details for demonstration purposes
+            const userInfo = {
+                name: "John Doe",
+                email: "johndoe@example.com",
+                trn: "123-456-789",
+                shippingAddress: "123 Wellness Avenue, Health City",
+            };
+
+            // Retrieve selected products from localStorage (or use default data)
+            const selectedProducts = JSON.parse(localStorage.getItem("SelectedProducts")) || [
+                { name: "Product A", quantity: 2, price: 50, discount: 5 },
+                { name: "Product B", quantity: 1, price: 100, discount: 10 },
+            ];
+
+            // Calculate the subtotal, taxes, and total cost
+            let subtotal = 0;
+            selectedProducts.forEach((product) => {
+                const totalPrice = product.quantity * product.price - product.discount;
+                subtotal += totalPrice;
+            });
+            const taxes = subtotal * 0.15; // 15% tax
+            const totalCost = subtotal + taxes;
+
+            // Generate a unique invoice number
+            const invoiceNumber = `INV-${Date.now()}`;
+
+            // Create the invoice object
+            const invoice = {
+                companyName: "Purewellness",
+                date: new Date().toLocaleString(),
+                shippingInfo: userInfo.shippingAddress,
+                invoiceNumber: invoiceNumber,
+                trn: userInfo.trn,
+                purchasedItems: selectedProducts,
+                taxes: taxes.toFixed(2),
+                subtotal: subtotal.toFixed(2),
+                totalCost: totalCost.toFixed(2),
+            };
+
+            // Store the invoice in the user's invoice array in localStorage
+            let userInvoices = JSON.parse(localStorage.getItem("UserInvoices")) || [];
+            userInvoices.push(invoice);
+            localStorage.setItem("UserInvoices", JSON.stringify(userInvoices));
+
+            // Store the invoice globally in the AllInvoices array
+            let allInvoices = JSON.parse(localStorage.getItem("AllInvoices")) || [];
+            allInvoices.push(invoice);
+            localStorage.setItem("AllInvoices", JSON.stringify(allInvoices));
+
+            // Notify the user and redirect to the invoice details page
+            alert(`Invoice has been generated and sent to ${userInfo.email}.`);
+            window.location.href = "invoice_details.html";
+        }
+
+        /**
+         * Display selected products in the invoice summary
+         */
+        function displaySelectedProducts() {
+            const selectedProductsList = document.getElementById("selected-products");
+            const selectedProducts = JSON.parse(localStorage.getItem("SelectedProducts")) || [];
+            selectedProductsList.innerHTML = selectedProducts.map((product) => `
+                <li>
+                    <p>${product.name} - Quantity: ${product.quantity}, Price: $${product.price}, Discount: $${product.discount}</p>
+                </li>
+            `).join("");
+        }
+
+        /**
+         * On page load, display the selected products
+         */
+        window.onload = function () {
+            displaySelectedProducts();
+        };
+    </script>
 </body>
 </html>
-
