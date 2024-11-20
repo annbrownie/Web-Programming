@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <!-- Load Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -16,32 +17,42 @@
             text-align: center;
         }
         .chart-container {
-            width: 70%;
+            width: 60%; /* Make charts 40% smaller */
             margin: 0 auto;
             margin-bottom: 50px;
         }
     </style>
 </head>
 <body>
+    <!-- Page Title -->
     <h2>Dashboard</h2>
+
+    <!-- Container for Gender Frequency Bar Chart -->
     <div class="chart-container">
         <h3>Gender Frequency</h3>
-        <canvas id="genderPieChart"></canvas>
+        <canvas id="genderBarChart"></canvas>
     </div>
+
+    <!-- Container for Age Group Frequency Pie Chart -->
     <div class="chart-container">
         <h3>Age Group Frequency</h3>
-        <canvas id="ageGroupBarChart"></canvas>
+        <canvas id="ageGroupPieChart"></canvas>
     </div>
+
     <script>
+        // Fetch registration data from localStorage
         const registrationData = JSON.parse(localStorage.getItem("RegistrationData")) || [];
 
+        // Function to calculate gender and age group frequencies
         function calculateFrequencies() {
             const genderCount = { male: 0, female: 0, other: 0 };
             const ageGroupCount = { "18-25": 0, "26-35": 0, "36-50": 0, "50+": 0 };
             const currentYear = new Date().getFullYear();
 
             registrationData.forEach(user => {
+                // Increment gender count
                 genderCount[user.gender]++;
+                // Calculate user's age and increment the corresponding age group count
                 const age = currentYear - new Date(user.dob).getFullYear();
                 if (age >= 18 && age <= 25) ageGroupCount["18-25"]++;
                 else if (age >= 26 && age <= 35) ageGroupCount["26-35"]++;
@@ -52,43 +63,53 @@
             return { genderCount, ageGroupCount };
         }
 
+        // Function to render charts
         function renderCharts() {
             const { genderCount, ageGroupCount } = calculateFrequencies();
 
-            // Gender Pie Chart
-            new Chart(document.getElementById("genderPieChart"), {
-                type: "pie",
+            // Gender Bar Chart
+            new Chart(document.getElementById("genderBarChart"), {
+                type: "bar", // Specify chart type
                 data: {
-                    labels: ["Male", "Female", "Other"],
+                    labels: ["Male", "Female", "Other"], // Labels for the bar chart
                     datasets: [{
                         label: "Gender Distribution",
-                        data: Object.values(genderCount),
-                        backgroundColor: ["#3498db", "#e74c3c", "#9b59b6"]
-                    }]
-                }
-            });
-
-            // Age Group Bar Chart
-            new Chart(document.getElementById("ageGroupBarChart"), {
-                type: "bar",
-                data: {
-                    labels: Object.keys(ageGroupCount),
-                    datasets: [{
-                        label: "Age Group Distribution",
-                        data: Object.values(ageGroupCount),
-                        backgroundColor: "#2ecc71"
+                        data: Object.values(genderCount), // Gender frequencies
+                        backgroundColor: ["#3498db", "#e74c3c", "#9b59b6"] // Bar colors
                     }]
                 },
                 options: {
+                    responsive: true, // Adjust chart to fit the container
+                    plugins: {
+                        legend: { display: false }, // Hide legend for clarity
+                    },
                     scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                        y: { beginAtZero: true } // Start y-axis at 0
+                    }
+                }
+            });
+
+            // Age Group Pie Chart
+            new Chart(document.getElementById("ageGroupPieChart"), {
+                type: "pie", // Specify chart type
+                data: {
+                    labels: Object.keys(ageGroupCount), // Labels for the pie chart
+                    datasets: [{
+                        label: "Age Group Distribution",
+                        data: Object.values(ageGroupCount), // Age group frequencies
+                        backgroundColor: ["#1abc9c", "#f39c12", "#9b59b6", "#34495e"] // Slice colors
+                    }]
+                },
+                options: {
+                    responsive: true, // Adjust chart to fit the container
+                    plugins: {
+                        legend: { position: "top" } // Place legend at the top
                     }
                 }
             });
         }
 
+        // Render the charts on page load
         renderCharts();
     </script>
 </body>
