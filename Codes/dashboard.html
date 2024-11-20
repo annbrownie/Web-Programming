@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard with Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,30 +12,14 @@
             background-color: #f4f4f9;
         }
 
-        h2 {
+        h2, h3 {
             color: #4CAF50;
             text-align: center;
         }
 
-        #userFrequency, #ageFrequency {
-            margin-top: 30px;
-        }
-
-        .frequency-bar {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-        }
-
-        .label {
-            width: 100px;
-            font-weight: bold;
-        }
-
-        .bar {
-            height: 20px;
-            background-color: rgb(255, 81, 81);
-            margin-left: 10px;
+        .chart-container {
+            width: 70%;
+            margin: 30px auto;
         }
     </style>
 </head>
@@ -42,32 +27,30 @@
 
 <h2>Dashboard</h2>
 
-<div id="userFrequency">
+<div class="chart-container">
     <h3>Gender Frequency</h3>
-    <div id="genderChart"></div>
+    <canvas id="genderPieChart"></canvas>
 </div>
 
-<div id="ageFrequency">
+<div class="chart-container">
     <h3>Age Group Frequency</h3>
-    <div id="ageGroupChart"></div>
+    <canvas id="ageGroupBarChart"></canvas>
 </div>
 
 <script>
-    // Retrieve registration data from localStorage
-    const registrationData = JSON.parse(localStorage.getItem("RegistrationData")) || [];
-
-    // Function to display gender frequency chart
     function ShowUserFrequency() {
         const genderCount = { male: 0, female: 0, other: 0 };
         const ageGroupCount = { "18-25": 0, "26-35": 0, "36-50": 0, "50+": 0 };
         const currentYear = new Date().getFullYear();
 
-        // Calculate frequencies based on gender and age groups
+        // Retrieve updated registration data
+        const registrationData = JSON.parse(localStorage.getItem("RegistrationData")) || [];
+
         registrationData.forEach(user => {
-            // Gender Count
+            // Calculate gender frequency
             genderCount[user.gender]++;
 
-            // Age Group Count
+            // Calculate age group frequency
             const age = currentYear - new Date(user.dob).getFullYear();
             if (age >= 18 && age <= 25) ageGroupCount["18-25"]++;
             else if (age >= 26 && age <= 35) ageGroupCount["26-35"]++;
@@ -75,52 +58,46 @@
             else if (age > 50) ageGroupCount["50+"]++;
         });
 
-        // Generate Gender Frequency Bar Chart
-        const genderChart = document.getElementById("genderChart");
-        genderChart.innerHTML = ''; // Clear existing content
-        Object.keys(genderCount).forEach(gender => {
-            const barContainer = document.createElement("div");
-            barContainer.classList.add("frequency-bar");
+        // Destroy previous charts if they exist
+        if (window.genderPieChart) window.genderPieChart.destroy();
+        if (window.ageGroupBarChart) window.ageGroupBarChart.destroy();
 
-            const label = document.createElement("span");
-            label.classList.add("label");
-            label.textContent = `${gender.charAt(0).toUpperCase() + gender.slice(1)}:`;
-
-            const bar = document.createElement("div");
-            bar.classList.add("bar");
-            bar.style.width = `${genderCount[gender] * 20}px`;
-            bar.style.height = "40px";
-            bar.textContent = ` ${genderCount[gender]} `;
-
-            barContainer.appendChild(label);
-            barContainer.appendChild(bar);
-            genderChart.appendChild(barContainer);
+        // Gender Pie Chart
+        const genderPieCtx = document.getElementById("genderPieChart").getContext("2d");
+        window.genderPieChart = new Chart(genderPieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Male', 'Female', 'Other'],
+                datasets: [{
+                    data: [genderCount.male, genderCount.female, genderCount.other],
+                    backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56']
+                }]
+            },
+            options: { responsive: true }
         });
 
-        // Generate Age Group Frequency Bar Chart
-        const ageGroupChart = document.getElementById("ageGroupChart");
-        ageGroupChart.innerHTML = ''; // Clear existing content
-        Object.keys(ageGroupCount).forEach(ageGroup => {
-            const barContainer = document.createElement("div");
-            barContainer.classList.add("frequency-bar");
-
-            const label = document.createElement("span");
-            label.classList.add("label");
-            label.textContent = `${ageGroup}:`;
-
-            const bar = document.createElement("div");
-            bar.classList.add("bar");
-            bar.style.width = `${ageGroupCount[ageGroup] * 20}px`;; 
-            bar.style.height = "40px";
-            bar.textContent = ` ${ageGroupCount[ageGroup]} `;
-
-            barContainer.appendChild(label);
-            barContainer.appendChild(bar);
-            ageGroupChart.appendChild(barContainer);
+        // Age Group Bar Chart
+        const ageBarCtx = document.getElementById("ageGroupBarChart").getContext("2d");
+        window.ageGroupBarChart = new Chart(ageBarCtx, {
+            type: 'bar',
+            data: {
+                labels: ['18-25', '26-35', '36-50', '50+'],
+                datasets: [{
+                    label: 'Age Group Frequency',
+                    data: [
+                        ageGroupCount["18-25"],
+                        ageGroupCount["26-35"],
+                        ageGroupCount["36-50"],
+                        ageGroupCount["50+"]
+                    ],
+                    backgroundColor: '#4CAF50'
+                }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
         });
     }
 
-    // Call the function to display the frequency charts
+    // Initialize the charts
     ShowUserFrequency();
 </script>
 
