@@ -4,7 +4,6 @@ body {
   background-color: #f4f4f9;
 }
 
-
 .header {
   height: 500px;
   display: flex;
@@ -38,36 +37,29 @@ h1 {
   color: #333;
 }
 
-
 .navbar a{
-text-align: center;
-padding: 30px 40px;
-color: rgb(255, 255, 255);
-text-decoration: none;
-
-
-
+  text-align: center;
+  padding: 30px 40px;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
 }
 
 .navbar{
-background-color: black;
-overflow: hidden;
-margin: 0;
-padding: 10px;
-height:30px;
+  background-color: black;
+  overflow: hidden;
+  margin: 0;
+  padding: 10px;
+  height: 30px;
 }
 
 .navlogo {
-height: 100%;
-width: 3%;
-}
-.navbar a:hover{
-background-color: rgb(204, 33, 33);
-
+  height: 100%;
+  width: 3%;
 }
 
-
-
+.navbar a:hover {
+  background-color: rgb(204, 33, 33);
+}
 
 .image_container {
   display: grid;
@@ -162,11 +154,61 @@ button#cancelBtn:hover {
 
 .about_us {
   margin: 100px;
-
 }
 
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .header {
+    height: 300px; 
+    padding: 20px;
+  }
 
-/*Login Page CSS*/
+  .header-title {
+    font-size: 50px; 
+  }
+
+  .navbar a {
+    padding: 15px 20px; 
+  }
+
+  .navbar {
+    height: auto; 
+    padding: 10px;
+  }
+
+  .image_container {
+    grid-template-columns: 1fr; 
+    gap: 20px;
+    margin: 20px auto;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .item {
+    padding: 15px; 
+  }
+
+  .item h3 {
+    font-size: 20px; 
+  }
+
+  .item p {
+    font-size: 16px; 
+  }
+
+  button {
+    padding: 12px 25px; 
+    font-size: 14px; 
+  }
+
+  .footer {
+    padding: 10px; 
+  }
+
+  .about_us {
+    margin: 50px 20px; 
+}
+}
 
 
 
