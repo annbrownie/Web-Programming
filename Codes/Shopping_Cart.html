@@ -49,13 +49,16 @@
             const items = JSON.parse(localStorage.getItem("shoppingCart")) || [];
             const container = document.getElementById("image_container"); // The container where cart items will be displayed
             const totalPriceElement = document.getElementById("total_price"); // Element to display the total price
+            const totalTaxElement = document.getElementById("taxes"); // Element to display the taxes
             let total = 0; 
+            let taxes = 0;
     
             if (items.length) {
                 // If there are items in the cart, create their HTML structure
                 container.innerHTML = items.map((item, index) => {
                     
                     total += item.price * item.quantity;
+                    taxes += item.price * item.quantity * (percent - 1);
     
                     // Return HTML for each cart item
                     return `
@@ -77,8 +80,9 @@
                 container.innerHTML = '<p>No items in the cart.</p>';
             }
     
-            // Update the total price display
+            // Update the total price display and taxes
             totalPriceElement.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
+            totalTaxElement.innerHTML = `<h3>Taxes: $${taxes.toFixed(2)}</h3>`;
         }
     
         // Function to update the quantity
