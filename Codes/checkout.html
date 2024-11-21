@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Group Project</title>
+    <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+    <header>
+        <main>
+            <h1>Order Summary</h1>
+            <div class="flex">
+            </div>
+        </main>
+        <div class="links">
+            <section class="sc">
+                <img src="https://cdn-icons-png.flaticon.com/128/3144/3144456.png" alt="shoppingcart">
+                <h3>secure checkout</h3>
+            </section>
+            <h3>Continue shopping </h3>
+        </div>
+    </header>
+    <div class="cartContainer">
+        <h1 class="directions">Cart > Place Order > Pay > Order Complete</h1>
+
+    <img src="../Resources/Shopping_bag.png" alt="Shopping Bag">
+     
+
+        
+        <main class="sfp">
+            <h1 class="Shipping">Shipping Address</h1>
+            <form action="">
+                <div class="input-container">
+                    <select name="Location" >
+                        <option value="" disabled selected>Location</option>
+                        <option value="United States">United States</option>
+                        <option value="Jamaica">Jamaica</option>
+                        <option value="China">China</option>
+                        <option value="Africa">Africa</option>
+                    </select>
+                    <div class="name">
+                        <main>
+                            <label>First Name:</label>
+                            <input type="text"  name="First Name" placeholder="First Name" required>
+                        </main>
+                        <main>
+                            <label >Last Name:</label>
+                            <input type="text"  name="Last Name" placeholder="Last Name" required>
+                        </main>
+                    </div>
+                    <div class="col">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" placeholder="Phone Number" required>
+                    </div>
+                    <div class="col">
+                        <label>Address</label>
+                        <input type="text" placeholder="Address">
+                    </div>
+                    <div class="default">
+                        <input type="checkbox">
+                        <label>Make Default</label>
+                    </div>
+                    <button class="Save" type="button">Save</button>
+
+                    <section class="order-summary">
+                        <h2>Your Items</h2>
+                        <div class="items-container">
+                            <!-- Quantity Heading -->
+                            <div class="quantity-header">
+                                <h3>Quantity</h3>
+                            </div>
+                    
+                            <!-- First Item -->
+                            <div class="item-row">
+                                <img src="../Resources/Jersey.jpg" alt="FC BARCELONA Away 14/15 Jersey">
+                                <div class="quantity">
+                                    <input type="number" id="quantity-item1" name="QuantityItem1" min="1" value="1">
+                                </div>
+                            </div>
+                    
+                            <!-- Second Item -->
+                            <div class="item-row">
+                                <img src="../Resources/Jersey7.jpeg" alt="FC BARCELONA Away 18/19 Jersey">
+                                <div class="quantity">
+                                    <input type="number" id="quantity-item2" name="QuantityItem2" min="1" value="1">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    
+                   
+                    <div class="btn">
+                        <button class="confirm">CONFIRM</button>
+                       <button class="cancel">
+                        <a href="Shopping_Cart.html">CANCEL</a>
+                       </button> 
+                    </div>
+                </div>
+                    </section>
+            </form>
+        </main>
+    </div>
+</body>
+</html>
+
+
+
+
