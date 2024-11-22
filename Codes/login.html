@@ -161,6 +161,7 @@
                     if (user) {
                         // Successful login
                         alert("Login successful! Redirecting to product catalog...");
+                        localStorage.setItem("TRN", trn);
                         window.location.href = "Product_page.html"; // Redirect to product catalog page
                     } else {
                         // Login failed
