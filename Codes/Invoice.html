@@ -6,8 +6,8 @@
     <title>Invoice</title>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* General styling for the page */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -15,7 +15,6 @@
             background-color: #f4f4f9;
         }
 
-        /* Navbar styles */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -39,7 +38,6 @@
             text-decoration: underline;
         }
 
-        /* Main container styling */
         .main {
             display: flex;
             justify-content: center;
@@ -49,7 +47,6 @@
             background-color: #f4f4f9;
         }
 
-        /* Invoice card styling */
         .Invoice {
             background-color: white;
             padding: 40px;
@@ -59,14 +56,12 @@
             width: 100%;
         }
 
-        /* Header and titles */
         h1, h3 {
             font-family: 'Anton', sans-serif;
             color: #333;
             margin-bottom: 20px;
         }
 
-        /* Product list styling */
         #product-list ul {
             list-style: none;
             padding: 0;
@@ -80,20 +75,24 @@
             border-bottom: 1px solid #ddd;
         }
 
+        #product-list ul li img {
+            width: 80px;
+            height: auto;
+            margin-right: 20px;
+        }
+
         #product-list ul li p {
             margin: 0;
             font-size: 16px;
             color: #555;
         }
 
-        /* Total cost styling */
         #total-cost {
             font-weight: bold;
             font-size: 20px;
             color: #333;
         }
 
-        /* Button container and buttons */
         .button-container {
             margin-top: 30px;
             display: flex;
@@ -123,7 +122,6 @@
             background-color: #a12e2e;
         }
 
-        /* Footer styling */
         .footer {
             background-color: #242526;
             color: white;
@@ -135,26 +133,38 @@
     </style>
 </head>
 <body>
-
-    <!-- Navbar section -->
     <div class="navbar">
         <a href="Index.html"><img src="../Resources/logo.jpg" class="navlogo" alt="Company Logo"></a>
         <a href="#About_us">ABOUT US</a>
         <a href="mailto:kevoy.townsend@students.utech.edu.jm" target="_blank">Contact Us</a>
     </div>
-
-    <!-- Main invoice section -->
+    
     <div class="main">
         <div class="Invoice">
-            <h1>Order Summary</h1>
+            <h1>Invoice</h1>
+            
+            <!-- Invoice Details -->
+            <p><strong>Company Name:</strong> <span id="company-name">KITGAME</span></p>
+            <p><strong>Invoice Date:</strong> <span id="invoice-date"></span></p>
+            <p><strong>Invoice Number:</strong> <span id="invoice-number"></span></p>
+            <p><strong>TRN:</strong> <span id="trn"></span></p>
+            <br>
             <div id="product-list">
                 <h3>Your Products</h3>
-                <!-- Dynamic product list will be inserted here -->
                 <ul id="selected-products"></ul>
             </div>
-            <h3>Total Cost of Products: <span id="total-cost">$0</span></h3>
-            <p>Tax included.</p>
-            <!-- Buttons for checkout, cancel, and exit actions -->
+            <br>
+            <div id="total_price" class="total-price">
+                <h3>Total: $0.00</h3>
+            </div>
+            <div id="taxes" class="totaltax">
+                <h3>Taxes: $0.00</h3>
+            </div>
+            <br>
+            <div id="subTotal" class="subTotal">
+                <h3>Subtotal: $0.00</h3>
+            </div>
+
             <div class="button-container">
                 <button id="checkoutBtn" onclick="confirmPurchase()">CheckOut</button>
                 <button id="cancelBtn" onclick="window.location.href = 'product_page.html'">Cancel</button>
@@ -163,97 +173,92 @@
         </div>
     </div>
 
-    <!-- Footer section -->
+    <br><br><br>
+    
     <div class="footer">
         <footer>
-            <p>&copy; 2024 KITGAME. All rights reserved.</p>
+            <div class="footer-links">
+                <h4>Quick Links</h4><br>
+                <a href="mailto:kevoy.townsend@students.utech.edu.jm" target="_blank">Contact Us.</a>
+            </div>
+            <div class="footer-social">
+                <h4>Follow ME</h4>
+                <a href="https://www.instagram.com/_.kevvv._/" target="_blank">Instagram</a>
+            </div>
         </footer>
+        <p>&copy; 2024 KITGAME. All rights reserved.</p>
     </div>
 
-    <!-- JavaScript functionality -->
     <script>
-        /**
-         * Confirm and process the purchase
-         * - Generates an invoice with user and product details
-         * - Stores the invoice in localStorage
-         * - Notifies the user about the generated invoice
-         */
-        function confirmPurchase() {
-            // Mocked user details for demonstration purposes
-            const userInfo = {
-                name: "John Doe",
-                email: "johndoe@example.com",
-                trn: "123-456-789",
-                shippingAddress: "123 Wellness Avenue, Health City",
-            };
-
-            // Retrieve selected products from localStorage (or use default data)
-            const selectedProducts = JSON.parse(localStorage.getItem("SelectedProducts")) || [
-                { name: "Product A", quantity: 2, price: 50, discount: 5 },
-                { name: "Product B", quantity: 1, price: 100, discount: 10 },
-            ];
-
-            // Calculate the subtotal, taxes, and total cost
-            let subtotal = 0;
-            selectedProducts.forEach((product) => {
-                const totalPrice = product.quantity * product.price - product.discount;
-                subtotal += totalPrice;
-            });
-            const taxes = subtotal * 0.15; // 15% tax
-            const totalCost = subtotal + taxes;
-
-            // Generate a unique invoice number
-            const invoiceNumber = `INV-${Date.now()}`;
-
-            // Create the invoice object
-            const invoice = {
-                companyName: "Purewellness",
-                date: new Date().toLocaleString(),
-                shippingInfo: userInfo.shippingAddress,
-                invoiceNumber: invoiceNumber,
-                trn: userInfo.trn,
-                purchasedItems: selectedProducts,
-                taxes: taxes.toFixed(2),
-                subtotal: subtotal.toFixed(2),
-                totalCost: totalCost.toFixed(2),
-            };
-
-            // Store the invoice in the user's invoice array in localStorage
-            let userInvoices = JSON.parse(localStorage.getItem("UserInvoices")) || [];
-            userInvoices.push(invoice);
-            localStorage.setItem("UserInvoices", JSON.stringify(userInvoices));
-
-            // Store the invoice globally in the AllInvoices array
-            let allInvoices = JSON.parse(localStorage.getItem("AllInvoices")) || [];
-            allInvoices.push(invoice);
-            localStorage.setItem("AllInvoices", JSON.stringify(allInvoices));
-
-            // Notify the user and redirect to the invoice details page
-            alert(`Invoice has been generated and sent to ${userInfo.email}.`);
-            window.location.href = "invoice_details.html";
-        }
-
-        /**
-         * Display selected products in the invoice summary
-         */
-        function displaySelectedProducts() {
-            const selectedProductsList = document.getElementById("selected-products");
-            const selectedProducts = JSON.parse(localStorage.getItem("SelectedProducts")) || [];
-            selectedProductsList.innerHTML = selectedProducts.map((product) => `
-                <li>
-                    <p>${product.name} - Quantity: ${product.quantity}, Price: $${product.price}, Discount: $${product.discount}</p>
-                </li>
-            `).join("");
-        }
-
-        /**
-         * On page load, display the selected products
-         */
-        window.onload = function () {
-            displaySelectedProducts();
-        };
+      document.addEventListener("DOMContentLoaded", function() {
+    const selectedProductsList = document.getElementById('selected-products');
+    const totalCostElement = document.getElementById('total-cost');
+    const invoiceNumberElement = document.getElementById('invoice-number');
+    const invoiceDateElement = document.getElementById('invoice-date');
+    const trnElement = document.getElementById('trn');
+    const totalPriceElement = document.getElementById("total_price"); // Element to display the total price
+    const totalTaxElement = document.getElementById("taxes"); // Element to display the taxes
+    const subTotalElement = document.getElementById("subTotal"); // Element to display the taxes
     
-    function exit() {
+    // variables
+
+    let total = 0; 
+    let taxes = 0;
+    let subTotal = 0;
+    const percent = 1.15;  
+
+    // Retrieve the selected products and total from localStorage and user info
+    const trn = localStorage.getItem('TRN');
+    const selectedProducts = JSON.parse(localStorage.getItem('shoppingCart')) || [];  // Use shoppingCart key
+
+    // Generate a unique invoice number 
+    const invoiceNumber = generateInvoiceNumber();
+    const invoiceDate = new Date().toLocaleDateString(); // Get the date
+
+    // Check if there are selected products
+    if (selectedProducts.length > 0) {
+        let productHTML = '';
+
+        // Loop through selected products and display them in a list
+        selectedProducts.forEach(product => {
+            // Assuming each product has 'name', 'price', and 'quantity' properties
+            const productTotal = product.price * product.quantity;
+            productHTML += `<li>${product.name} - $${product.price} x ${product.quantity} = $${productTotal.toFixed(2)}</li>`;
+
+            // Calculation for total and taxes
+            total += productTotal;
+            taxes += productTotal * (percent - 1);  
+            subTotal += productTotal * percent;  
+        });
+
+        selectedProductsList.innerHTML = productHTML;
+
+        // Set invoice number and date in the header
+        invoiceNumberElement.textContent = invoiceNumber;
+        invoiceDateElement.textContent = invoiceDate;
+        trnElement.textContent = trn;
+
+        // DIsplay taxes, total and subtotal
+        totalPriceElement.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
+        totalTaxElement.innerHTML = `<h3>Taxes: $${taxes.toFixed(2)}</h3>`;
+        subTotalElement.innerHTML = `<h3>Subtotal: $${subTotal.toFixed(2)}</h3>`;
+    } else {
+        selectedProductsList.innerHTML = '<li>No products selected.</li>';
+        totalPriceElement.innerHTML = "<h3>Total: $0.00</h3>";
+        totalTaxElement.innerHTML = "<h3>Taxes: $0.00</h3>";
+        subTotalElement.innerHTML = "<h3>Subtotal: $0.00</h3>";
+    }
+});
+
+// Function to generate a unique invoice #
+function generateInvoiceNumber() {
+    const timestamp = new Date().getTime(); // Current timestamp in milliseconds
+    const randomNum = Math.floor(Math.random() * 10000);  // Add a random number 
+    return `INV-${timestamp}-${randomNum}`;
+}
+
+// Clear localStorage after purchase and show thank you
+function exit() {
     alert("Thank you for your purchase!");
 
     // Clear the localStorage
@@ -264,6 +269,51 @@
     window.location.href = 'login.html';
 }
 
+
+// Save the invoice to localStorage
+function saveInvoice() {
+        // Create an invoice object
+        const invoice = {
+            invoiceNumber: invoiceNumber,
+            invoiceDate: invoiceDate,
+            trn: trn,
+            products: selectedProducts,
+            total: total,
+            taxes: taxes,
+            subTotal: subTotal
+        };
+
+        // Retrieve existing invoices from localStorage
+        let allInvoices = JSON.parse(localStorage.getItem('AllInvoices')) || [];
+
+        // Append the new invoice to the array
+        allInvoices.push(invoice);
+
+        // Save the updated invoices array back to localStorage
+        localStorage.setItem('AllInvoices', JSON.stringify(allInvoices));
+
+        console.log('Invoice saved successfully:', invoice);
+    }
+
+    // Save Invoice when the user checks out
+    document.getElementById('checkoutBtn').addEventListener('click', function() {
+        saveInvoice();  // Save the invoice when the user checks out
+        alert("Thank you for your purchase! Your invoice has been saved.");
+
+    });
+
+
+// Function to exit 
+function exit() {
+    alert("Thank you for your purchase!");
+
+    // Clear the localStorage
+    localStorage.removeItem('shoppingCart');
+
+    
+    window.location.href = 'login.html';
+}
+</script>
     </script>
 </body>
 </html>
