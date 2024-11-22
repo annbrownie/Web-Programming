@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="Product_page.html"><img src="../Resources/logo.jpg" class="navlogo" alt="Company Logo"></a>
+        <a href="Index.html"><img src="../Resources/logo.jpg" class="navlogo" alt="Company Logo"></a>
         <a href="#About_us">ABOUT US</a>
         <a href="mailto:kevoy.townsend@students.utech.edu.jm" target="_blank">Contact Us</a>
     </div>
@@ -96,6 +96,10 @@
             totalTaxElement.innerHTML = `<h3>Taxes: $${taxes.toFixed(2)}</h3>`;
             subTotalElement.innerHTML = `<h3>Subtotal: $${subTotal.toFixed(2)}</h3>`;
 
+            //send price info to local storage
+            localStorage.setItem("total", total);
+            localStorage.setItem("taxes", taxes);
+            localStorage.setItem("subTotal", subTotal);
         }
     
         // Function to update the quantity
@@ -123,3 +127,4 @@
     
 </body>
 </html>
+
