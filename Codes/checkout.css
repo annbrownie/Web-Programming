@@ -1,0 +1,199 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f9;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #242526;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.icon-cart {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+.icon-cart svg {
+    margin-right: 10px;
+}
+
+h3 {
+    font-size: 16px;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+/* Left Section */
+.left-section {
+    width: 60%;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.shopping-bag {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.total-cost h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-size: 16px;
+    color: #333;
+}
+
+form input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+form input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
+}
+
+form .default label {
+    font-size: 14px;
+    color: #555;
+}
+
+form button.save {
+    padding: 12px;
+    background-color: #242526;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+form button.save:hover {
+    background-color: #333;
+}
+
+/* Right Section */
+#cartItemsContainer {
+    width: 35%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+#cartItemsContainer p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Total Price and Information Section */
+.total-price, .totaltax, .subTotal {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Buttons in the Cart Tab */
+.cartTab {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.cartTab .btn {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cartTab .btn button {
+    background-color: #242526;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cartTab .btn button:hover {
+    background-color: #333;
+}
+
+.cartTab .btn .clearAll {
+    background-color: #b23b3b;
+}
+
+.cartTab .btn .clearAll:hover {
+    background-color: #a12e2e;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .left-section, #cartItemsContainer {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .shopping-bag {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+
+    .total-cost h3 {
+        text-align: center;
+    }
+
+    .cartTab .btn {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

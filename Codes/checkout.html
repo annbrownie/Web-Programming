@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Group Project</title>
+    <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+    <header>
+        <main>
+            <h1>Order Summary</h1>
+        </main>
+        <div class="icon-cart">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1"/>
+            </svg>
+            <span>0</span>
+        </div>
+        <h3>Continue shopping</h3>
+    </header>
+
+    <main class="main-content">
+        <section class="left-section">
+            <img src="images/shopping_bag.PNG" alt="Shopping Bag" class="shopping-bag">
+            <div class="total-cost">
+                <h3>Total Cost: $0.00</h3>
+            </div>
+
+            <!-- Shipping Form -->
+            <form id="shippingForm">
+                <!-- Country (now a text box) -->
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" placeholder="Enter your country" required><br><br>
+                
+                <!-- Name Fields -->
+                <div class="name">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" placeholder="First Name" required><br>
+                    
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                </div>
+                <br>
+                <!-- Phone Number -->
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number" required><br><br>
+                
+                <!-- Address -->
+                <label for="address">Home Address:</label>
+                <input type="text" id="address" name="address" placeholder="Address"><br><br>
+                
+                <!-- Amount Being Paid -->
+                <label for="amount-paid">Amount Being Paid:</label>
+                <input type="text" name="currency" id="currency" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" placeholder="$0.00"><br><br>
+                
+                <!-- Default Checkbox -->
+                <div class="default">
+                    <input type="checkbox" id="makeDefault">
+                    <label for="makeDefault">Make Default</label>
+                </div><br>
+                
+                <!-- Save Button -->
+                <button class="save" type="submit">Save</button>
+            </form>
+            
+        </section>
+    </main>
+
+    <script>
+        // Wait until the DOM content is fully loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check if there's any data in localStorage and populate the form
+            loadFormData();
+        });
+
+        // Load the saved form data from localStorage (if any)
+        function loadFormData() {
+            const savedData = JSON.parse(localStorage.getItem('shippingData'));
+            if (savedData) {
+                document.getElementById('country').value = savedData.country || '';
+                document.getElementById('firstName').value = savedData.firstName || '';
+                document.getElementById('lastName').value = savedData.lastName || '';
+                document.getElementById('phone').value = savedData.phone || '';
+                document.getElementById('address').value = savedData.address || '';
+                document.getElementById('currency').value = savedData.currency || '';
+                document.getElementById('makeDefault').checked = savedData.makeDefault || false;
+            }
+        }
+
+        // Capture form data and store it in localStorage when the form is submitted
+        document.getElementById('shippingForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Get form values
+            const formData = {
+                country: document.getElementById('country').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                currency: document.getElementById('currency').value,
+                makeDefault: document.getElementById('makeDefault').checked
+            };
+
+            // Save the form data to localStorage
+            localStorage.setItem('shippingData', JSON.stringify(formData));
+
+            // Optionally, give feedback to the user
+            alert('Form data saved successfully!');
+        });
+    </script>
+</body>
+</html>
+
+    
