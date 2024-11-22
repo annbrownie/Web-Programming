@@ -25,10 +25,14 @@
         <div id="taxes" class="totaltax">
             <h3>Taxes: $0.00</h3>
         </div>
+        <div id="discount" class="discount">
+            <h3>Discount: -$0.00</h3>
+        </div>
         <br>
         <div id="subTotal" class="subTotal">
             <h3>Subtotal: $0.00</h3>
         </div>
+
         
         <div class="cartTab">
             
@@ -60,6 +64,7 @@
             let total = 0; 
             let taxes = 0;
             let subTotal = 0;
+            const discount = 2000
             const percent = 1.15;
     
             if (items.length) {
@@ -89,7 +94,10 @@
                 // display a message if the cart is empty
                 container.innerHTML = '<p>No items in the cart.</p>';
             }
-    
+            
+            // Calculate the total after discount
+            total = subTotal - discount
+            
             // Update the total price display and taxes
             totalPriceElement.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
             totalTaxElement.innerHTML = `<h3>Taxes: $${taxes.toFixed(2)}</h3>`;
@@ -99,6 +107,7 @@
             localStorage.setItem("total", total);
             localStorage.setItem("taxes", taxes);
             localStorage.setItem("subTotal", subTotal);
+            localStorage.setItem("discount", discount);
         }
     
         // Function to update the quantity
