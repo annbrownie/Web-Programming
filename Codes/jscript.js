@@ -44,18 +44,11 @@ function addToCart(name, price, imageUrl) {
 }
 
 
-
-
-    
-function confirmPurchase() {
-    alert("Thank you for your purchase!");
-
-    // Clear the localStorage data after purchase
-    localStorage.removeItem('shoppingCart');
-    localStorage.removeItem('total');
-
-   
+function clearCart() {
+    localStorage.removeItem("shoppingCart"); // Remove the shoppingCart entry from localStorage
+    loadCartItems();
 }
+
     
     
 
