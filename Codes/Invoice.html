@@ -194,72 +194,83 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-    const selectedProductsList = document.getElementById('selected-products');
-    const totalCostElement = document.getElementById('total-cost');
-    const invoiceNumberElement = document.getElementById('invoice-number');
-    const invoiceDateElement = document.getElementById('invoice-date');
-    const trnElement = document.getElementById('trn');
-    const totalPriceElement = document.getElementById("total_price"); // Element to display the total price
-    const totalTaxElement = document.getElementById("taxes"); // Element to display the taxes
-    const subTotalElement = document.getElementById("subTotal"); // Element to display the taxes
-    
-    // variables
-
-    let total = 0; 
-    let taxes = 0;
-    let subTotal = 0;
-    const percent = 1.15;  
-
-    // Retrieve the selected products and total from localStorage and user info
-    const trn = localStorage.getItem('TRN');
-    const selectedProducts = JSON.parse(localStorage.getItem('shoppingCart')) || [];  // Use shoppingCart key
-
-    // Generate a unique invoice number 
-    const invoiceNumber = generateInvoiceNumber();
-    const invoiceDate = new Date().toLocaleDateString(); // Get the date
-
-    // Check if there are selected products
-    if (selectedProducts.length > 0) {
-        let productHTML = '';
-
-        // Loop through selected products and display them in a list
-        selectedProducts.forEach(product => {
-            // Assuming each product has 'name', 'price', and 'quantity' properties
-            const productTotal = product.price * product.quantity;
-            productHTML += `<li>${product.name} - $${product.price} x ${product.quantity} = $${productTotal.toFixed(2)}</li>`;
-
-            // Calculation for total and taxes
-            total += productTotal;
-            taxes += productTotal * (percent - 1);  
-            subTotal += productTotal * percent;  
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectedProductsList = document.getElementById("selected-products");
+            const totalPriceElement = document.getElementById("total_price");
+            const totalTaxElement = document.getElementById("taxes");
+            const subTotalElement = document.getElementById("subTotal");
+            const invoiceNumberElement = document.getElementById("invoice-number");
+            const invoiceDateElement = document.getElementById("invoice-date");
+            const trnElement = document.getElementById("trn");
+        
+            let total = 0;
+            let taxes = 0;
+            let subTotal = 0;
+            const percent = 1.15;
+        
+            // Retrieve the selected products and TRN
+            const trn = localStorage.getItem("TRN");
+            const selectedProducts = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+        
+            // Generate a unique invoice number
+            const invoiceNumber = generateInvoiceNumber();
+            const invoiceDate = new Date().toLocaleDateString();
+        
+            if (selectedProducts.length > 0) {
+                let productHTML = "";
+                selectedProducts.forEach((product) => {
+                    const productTotal = product.price * product.quantity;
+                    productHTML += `<li>${product.name} - $${product.price} x ${product.quantity} = $${productTotal.toFixed(2)}</li>`;
+                    total += productTotal;
+                });
+        
+                taxes = total * 0.15; // Assuming 15% tax
+                subTotal = total + taxes;
+        
+                selectedProductsList.innerHTML = productHTML;
+                totalPriceElement.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
+                totalTaxElement.innerHTML = `<h3>Taxes: $${taxes.toFixed(2)}</h3>`;
+                subTotalElement.innerHTML = `<h3>Subtotal: $${subTotal.toFixed(2)}</h3>`;
+            } else {
+                selectedProductsList.innerHTML = "<li>No products selected.</li>";
+                totalPriceElement.innerHTML = "<h3>Total: $0.00</h3>";
+                totalTaxElement.innerHTML = "<h3>Taxes: $0.00</h3>";
+                subTotalElement.innerHTML = "<h3>Subtotal: $0.00</h3>";
+            }
+        
+            invoiceNumberElement.textContent = invoiceNumber;
+            invoiceDateElement.textContent = invoiceDate;
+            trnElement.textContent = trn;
+        
+            // Save Invoice and Checkout
+            document.getElementById("checkoutBtn").addEventListener("click", function () {
+                const invoice = {
+                    invoiceNumber: invoiceNumber,
+                    invoiceDate: invoiceDate,
+                    trn: trn,
+                    products: selectedProducts,
+                    total: total.toFixed(2),
+                    taxes: taxes.toFixed(2),
+                    subTotal: subTotal.toFixed(2),
+                };
+        
+                const allInvoices = JSON.parse(localStorage.getItem("AllInvoices")) || [];
+                allInvoices.push(invoice);
+                localStorage.setItem("AllInvoices", JSON.stringify(allInvoices));
+        
+                alert("Thank you for your purchase! Your invoice has been saved.");
+                localStorage.removeItem("shoppingCart");
+                window.location.href = "product_page.html";
+            });
         });
-
-        selectedProductsList.innerHTML = productHTML;
-
-        // Set invoice number and date in the header
-        invoiceNumberElement.textContent = invoiceNumber;
-        invoiceDateElement.textContent = invoiceDate;
-        trnElement.textContent = trn;
-
-        // DIsplay taxes, total and subtotal
-        totalPriceElement.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
-        totalTaxElement.innerHTML = `<h3>Taxes: $${taxes.toFixed(2)}</h3>`;
-        subTotalElement.innerHTML = `<h3>Subtotal: $${subTotal.toFixed(2)}</h3>`;
-    } else {
-        selectedProductsList.innerHTML = '<li>No products selected.</li>';
-        totalPriceElement.innerHTML = "<h3>Total: $0.00</h3>";
-        totalTaxElement.innerHTML = "<h3>Taxes: $0.00</h3>";
-        subTotalElement.innerHTML = "<h3>Subtotal: $0.00</h3>";
-    }
-});
-
-// Function to generate a unique invoice #
-function generateInvoiceNumber() {
-    const timestamp = new Date().getTime(); // Current timestamp in milliseconds
-    const randomNum = Math.floor(Math.random() * 10000);  // Add a random number 
-    return `INV-${timestamp}-${randomNum}`;
-}
+        
+        // Generate a unique invoice number
+        function generateInvoiceNumber() {
+            const timestamp = new Date().getTime();
+            const randomNum = Math.floor(Math.random() * 10000);
+            return `INV-${timestamp}-${randomNum}`;
+        }
+        
 
 // Clear localStorage after purchase and show thank you
 function exit() {

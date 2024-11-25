@@ -74,26 +74,36 @@
     </main>
 
     <script>
-        // Wait until the DOM content is fully loaded
-        document.addEventListener("DOMContentLoaded", function () {
-            // Check if there's any data in localStorage and populate the form
-            loadFormData();
-        });
+// Wait until the DOM content is fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+    // Load form data from localStorage (if any)
+    loadFormData();
 
-        // Load the saved form data from localStorage (if any)
-        function loadFormData() {
-            const savedData = JSON.parse(localStorage.getItem('shippingData'));
-            if (savedData) {
-                document.getElementById('country').value = savedData.country || '';
-                document.getElementById('firstName').value = savedData.firstName || '';
-                document.getElementById('lastName').value = savedData.lastName || '';
-                document.getElementById('phone').value = savedData.phone || '';
-                document.getElementById('address').value = savedData.address || '';
-                document.getElementById('currency').value = savedData.currency || '';
-                document.getElementById('makeDefault').checked = savedData.makeDefault || false;
-            }
-        }
+    // Retrieve the subtotal from localStorage
+    const subtotal = localStorage.getItem("subTotal");
 
+    // Display the subtotal as the total cost
+    const totalCostElement = document.querySelector(".total-cost h3");
+    if (subtotal) {
+        totalCostElement.textContent = `Total Cost: $${parseFloat(subtotal).toFixed(2)}`;
+    } else {
+        totalCostElement.textContent = "Total Cost: $0.00";
+    }
+});
+
+// Load the saved form data from localStorage (if any)
+function loadFormData() {
+    const savedData = JSON.parse(localStorage.getItem('shippingData'));
+    if (savedData) {
+        document.getElementById('country').value = savedData.country || '';
+        document.getElementById('firstName').value = savedData.firstName || '';
+        document.getElementById('lastName').value = savedData.lastName || '';
+        document.getElementById('phone').value = savedData.phone || '';
+        document.getElementById('address').value = savedData.address || '';
+        document.getElementById('currency').value = savedData.currency || '';
+        document.getElementById('makeDefault').checked = savedData.makeDefault || false;
+    }
+}
         // Capture form data and store it in localStorage when the form is submitted
         document.getElementById('shippingForm').addEventListener('submit', function (e) {
             e.preventDefault(); // Prevent default form submission
