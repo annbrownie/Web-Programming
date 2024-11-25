@@ -64,7 +64,6 @@
                 <th>Email</th>
                 <th>TRN</th>
                 <th>Date of Registration</th>
-                <th>Cart</th>
                 <th>Invoices</th>
             </tr>
         </thead>
@@ -104,9 +103,6 @@
         registrationData.forEach(user => {
             const row = document.createElement('tr');
 
-            // Calculate the number of items in the cart
-            const cartItemCount = Object.keys(user.cart || {}).length;
-
             row.innerHTML = `
                 <td>${user.firstName}</td>
                 <td>${user.lastName}</td>
@@ -116,7 +112,6 @@
                 <td>${user.email}</td>
                 <td>${user.trn}</td>
                 <td>${new Date(user.dateOfRegistration).toLocaleString()}</td>
-                <td>${cartItemCount} item(s) in cart</td>
                 <td>${user.invoices ? user.invoices.length : 0} invoice(s)</td>
             `;
 

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,19 +8,130 @@
     <script src="jscript.js"></script>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Blinking animation for the Black Friday discount banner */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
 
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #242526;
+            color: white;
+        }
+
+        .header-logo {
+            height: 50px;
+        }
+
+        .header-title {
+            font-family: 'Anton', sans-serif;
+            font-size: 2em;
+            margin-left: 20px;
+        }
+
+        .image_container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .item {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            max-width: 200px;
+            text-align: center;
+        }
+
+        .item img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .item button {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .item button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .button-container button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: #a71d2a;
+        }
+
+        .about_us {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .about_us h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            background-color: #242526;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .footer-links, .footer-social {
+            margin: 10px 0;
+        }
+
+        .footer-links a, .footer-social a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover, .footer-social a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    
+    <!-- Header Section -->
     <div class="header">
         <img src="../Resources/logo.jpg" class="header-logo" alt="Company Logo">
         <h1 class="header-title">KITGAME</h1>
     </div>
 
+    <!-- Navigation Section -->
     <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background-color: #242526;">
         <div>
+            <!-- Login Button -->
+            <a href="login.html" style="color: white; text-decoration: none; padding: 0 20px; font-size: 1em;">LOGIN</a>
             <a href="#About_us" style="color: white; text-decoration: none; padding: 0 20px; font-size: 1em;">ABOUT US</a>
             <a href="mailto:kevoy.townsend@students.utech.edu.jm" target="_blank" style="color: white; text-decoration: none; padding: 0 20px; font-size: 1em;">Contact Us</a>
         </div>
@@ -30,14 +139,6 @@
             BLACK FRIDAY DISCOUNT: $2000 off all orders!
         </div>
     </div>
-    
-    <style>
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-    </style>
-    
 
     <h1>OUR PRODUCTS</h1>
 
@@ -132,7 +233,7 @@
         <p> At KitGame, we're passionate about bringing the heart and soul of FC Barcelona directly to our fans. As lifelong supporters of this legendary club, we know the pride that comes with wearing the iconic Barça colors. 
             That’s why we offer an exclusive selection of authentic and high-quality FC Barcelona jerseys from past and present seasons. Whether you’re cheering at Camp Nou or showing your love around
              the world, our jerseys ensure you wear the crest with pride. Join us in celebrating the spirit of Barça—Més que un club!</p>
-        <p>Developers: Gail-Ann Whyte (2205587), Kevoy Townsend (2111671), Jovaughn Bennet (2302195), Sara-Ann McLean (2209521) <br>Group Project <br>Class: Monday @9</p>
+        <p>Developers: Gail-Ann Whyte (2205587), Kevoy Townsend (2111671), Jovaughn Bennet (2302185), Sara-Ann McLean (2209521) <br>Group Project <br>Class: Monday @9</p>
         <a href="mailto:kevoy.townsend@students.utech.edu.jm" target="_blank">Contact Us.</a> <br><br><br>
         <a href="dashboard.html" target="_blank">Dashboard</a><br>
         <a href="login_regis_form_data.html" target="_blank">Registered Users</a>

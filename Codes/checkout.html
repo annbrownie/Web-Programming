@@ -15,11 +15,14 @@
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1"/>
             </svg>
+            <span>0</span>
+        </div>
+        <h3>Continue shopping</h3>
     </header>
 
     <main class="main-content">
         <section class="left-section">
-            <img src="../Resources/shopping_bag.png" alt="Shopping Bag" class="shopping-bag">
+            <img src="images/shopping_bag.PNG" alt="Shopping Bag" class="shopping-bag">
             <div class="total-cost">
                 <h3>Total Cost: $0.00</h3>
             </div>
@@ -62,9 +65,9 @@
             </form>
             <div class="button-container">
                 <button id="checkoutBtn" onclick="window.location.href = 'Shopping_Cart.html'">Shopping Cart</button>
-                <button class="clearAll" onclick="clearCart()">Cancel</button>
+                <button class="clearAll" onclick="clearCartAndRedirect()">Cancel</button>
                 <button id="exitBtn" onclick="window.location.href = 'login.html'">Exit</button>
-                <button id="exitBtn" onclick="window.location.href = 'Invoice.html'">Invoice</button>
+                <button id="exitBtn" onclick="window.location.href = 'invoice.html'">Invoice</button>
             </div>
             
         </section>
@@ -112,8 +115,15 @@
             // Optionally, give feedback to the user
             alert('Form data saved successfully!');
         });
+
+        // Function to clear the cart and redirect to the shopping cart page
+        function clearCartAndRedirect() {
+            // Clear cart data
+            localStorage.removeItem('cartData'); // Replace 'cartData' with the actual key for your cart data
+            
+            // Redirect to Shopping_Cart.html
+            window.location.href = 'Shopping_Cart.html';
+        }
     </script>
 </body>
 </html>
-
-    
