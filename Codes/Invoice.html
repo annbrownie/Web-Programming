@@ -353,15 +353,15 @@ function ShowInvoices() {
 
 // Function to get and display all invoices for a user based on TRN
 function GetUserInvoices() {
-    // Retrieve the user data from RegisterData in localStorage
-    const registerData = JSON.parse(localStorage.getItem('RegisterData')) || [];
-    console.log("Registered Users Data:", registerData);
+    // Retrieve the user data from RegistrationData in localStorage
+    const RegistrationData = JSON.parse(localStorage.getItem('RegistrationData')) || [];
+    console.log("Registered Users Data:", RegistrationData);
 
     // Prompt the user for their TRN
     const searchTRN = prompt("Enter your TRN to view your invoices:");
     if (searchTRN) {
         // Find the user with the matching TRN
-        const user = registerData.find(user => user.trn === searchTRN);
+        const user = RegistrationData.find(user => user.trn === searchTRN);
         if (user) {
             // Retrieve invoices associated with the user
             const allInvoices = JSON.parse(localStorage.getItem('AllInvoices')) || [];
