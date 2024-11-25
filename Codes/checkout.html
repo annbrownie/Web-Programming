@@ -49,10 +49,8 @@
                 
                 <!-- Amount Being Paid -->
                 <label for="currency">Enter Currency Amount:</label>
-                <input type="text" id="currency" placeholder="$0.00" oninput="this.value=formatCurrency(this.value)">
+                <input type="text" id="currency" placeholder="$0.00" oninput="format()">
                 <!-- To format the amount entered into currency-->
-                <input type="text" id="currency" placeholder="$0.00">
-                
                 <script>
                   function format() {
                     const input = document.getElementById('currency');
