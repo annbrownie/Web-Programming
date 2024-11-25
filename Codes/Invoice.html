@@ -169,7 +169,11 @@
                 <button id="checkoutBtn" onclick="confirmPurchase()">CheckOut</button>
                 <button id="cancelBtn" onclick="window.location.href = 'product_page.html'">Cancel</button>
                 <button id="exitBtn" onclick="exit()">Exit</button>
+                <!-- New Buttons for Invoice Functions -->
+                <button id="showInvoicesBtn" onclick="ShowInvoices()">Show All Invoices</button>
+                <button id="getUserInvoicesBtn" onclick="GetUserInvoices()">Get My Invoices</button>
             </div>
+            
         </div>
     </div>
 
@@ -313,6 +317,51 @@ function exit() {
     
     window.location.href = 'login.html';
 }
+// Function to display all invoices and allow searching by TRN
+function ShowInvoices() {
+    // Retrieve all invoices from localStorage
+    const allInvoices = JSON.parse(localStorage.getItem('AllInvoices')) || [];
+    console.log("All Invoices:", allInvoices);
+
+    // Prompt the user for a TRN to search for invoices
+    const searchTRN = prompt("Enter TRN to search for invoices:");
+    if (searchTRN) {
+        // Filter invoices by the entered TRN
+        const matchingInvoices = allInvoices.filter(invoice => invoice.trn === searchTRN);
+        if (matchingInvoices.length > 0) {
+            console.log(`Invoices for TRN ${searchTRN}:`, matchingInvoices);
+        } else {
+            console.log(`No invoices found for TRN ${searchTRN}.`);
+        }
+    }
+}
+
+// Function to get and display all invoices for a user based on TRN
+function GetUserInvoices() {
+    // Retrieve the user data from RegisterData in localStorage
+    const registerData = JSON.parse(localStorage.getItem('RegisterData')) || [];
+    console.log("Registered Users Data:", registerData);
+
+    // Prompt the user for their TRN
+    const searchTRN = prompt("Enter your TRN to view your invoices:");
+    if (searchTRN) {
+        // Find the user with the matching TRN
+        const user = registerData.find(user => user.trn === searchTRN);
+        if (user) {
+            // Retrieve invoices associated with the user
+            const allInvoices = JSON.parse(localStorage.getItem('AllInvoices')) || [];
+            const userInvoices = allInvoices.filter(invoice => invoice.trn === searchTRN);
+            if (userInvoices.length > 0) {
+                console.log(`Invoices for user with TRN ${searchTRN}:`, userInvoices);
+            } else {
+                console.log(`No invoices found for user with TRN ${searchTRN}.`);
+            }
+        } else {
+            console.log(`No user found with TRN ${searchTRN}.`);
+        }
+    }
+}
+
 </script>
     </script>
 </body>
