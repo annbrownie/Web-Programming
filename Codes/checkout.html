@@ -51,16 +51,14 @@
                 <label for="currency">Enter Currency Amount:</label>
                 <input type="text" id="currency" placeholder="$0.00" oninput="this.value=formatCurrency(this.value)">
                 <!-- To format the amount entered into currency-->
-                <script>
-                    function formatCurrency(value) {
-                        value = value.replace(/[^\d.-]/g, ''); 
-                        if (!value) return "$0.00";
+                <input type="text" id="currency" placeholder="$0.00">
                 
-                        value = parseFloat(value).toFixed(2); 
-                        let [integer, decimal] = value.split(".");
-                        integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
-                        return "$" + integer + "." + decimal;
-                    }
+                <script>
+                  function format() {
+                    const input = document.getElementById('currency');
+                    const num = parseFloat(input.value.replace(/[^0-9.]/g, ''));
+                    input.value = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+                  }
                 </script>
                 
                 <!-- Default Checkbox -->
