@@ -26,13 +26,17 @@
         .header-logo {
             height: 50px;
         }
-
         .header-title {
             font-family: 'Anton', sans-serif;
-            font-size: 2em;
-            margin-left: 20px;
+            font-size: 3em; /* Adjust size as needed */
+            color: white; /* Ensure the text is visible */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add shadow for better readability */
+            position: absolute; /* Allows precise positioning within the container */
+            top: 25%; /* Adjust the vertical position (e.g., 20% from the top of the container) */
+            left: 45%; /* Adjust the horizontal position (e.g., 10% from the left of the container) */
+            transform: translate(-10%, -10%); /* Fine-tune positioning if needed */
+            z-index: 10; /* Ensure the text appears on top */
         }
-
         .image_container {
             display: flex;
             flex-wrap: wrap;
@@ -122,7 +126,7 @@
 <body>
 
     <!-- Header Section -->
-    <div class="header" style="text-align: center; margin-top: 50px; font-family: 'Anton', sans-serif; color: #333;">
+    <div class="header">
         <img src="../Resources/logo.jpg" class="header-logo" alt="Company Logo">
         <h1 class="header-title">KITGAME</h1>
     </div>
