@@ -84,13 +84,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Load form data from localStorage (if any)
     loadFormData();
 
-    // Retrieve the subtotal from localStorage
-    const subtotal = localStorage.getItem("subTotal");
+    // Retrieve the Total from localStorage
+    const total = localStorage.getItem("total");
 
-    // Display the subtotal as the total cost
+    // Display the Total as the total cost
     const totalCostElement = document.querySelector(".total-cost h3");
-    if (subtotal) {
-        totalCostElement.textContent = `Total Cost: $${parseFloat(subtotal).toFixed(2)}`;
+    if (total) {
+        totalCostElement.textContent = `Total Cost: $${parseFloat(total).toFixed(2)}`;
     } else {
         totalCostElement.textContent = "Total Cost: $0.00";
     }
