@@ -132,13 +132,20 @@ function loadFormData() {
         });
 
         // Function to clear the cart and redirect to the shopping cart page
-        function clearCartAndRedirect() {
-            // Clear cart data
-            localStorage.removeItem('cartData'); // Replace 'cartData' with the actual key for your cart data
-            
-            // Redirect to Shopping_Cart.html
-            window.location.href = 'Shopping_Cart.html';
-        }
+     function clearCartAndRedirect() {
+    // Clear cart data
+    localStorage.removeItem('cartData'); // Replace 'cartData' with the actual key for your cart data
+
+    // Clear form fields
+    const form = document.querySelector('form'); // Select the form element
+    if (form) {
+        form.reset(); // Reset all form fields
+    }
+
+    // Redirect to Shopping_Cart.html
+    window.location.href = 'Shopping_Cart.html';
+}
+
     </script>
 </body>
 </html>
